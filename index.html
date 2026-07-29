@@ -11,8 +11,8 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Josefin+Sans:wght@400;500;600;700&family=Reenie+Beanie&family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 <style>
   :root{
-    --forest: #4B2C6B;
-    --forest-deep: #170C22;
+    --forest: #A96FE8;
+    --forest-deep: #3B1F5C;
     --nude: #E7C7BC;
     --nude-soft: #F1DCD3;
     --black: #0B0908;
@@ -20,13 +20,28 @@
     --white: #F5F1EC;
     --mist: #A9ABA3;
     --line: rgba(231,199,188,0.14);
+    --stars:
+      radial-gradient(1px 1px at 8% 15%, rgba(255,255,255,0.85), transparent 60%),
+      radial-gradient(1px 1px at 22% 65%, rgba(255,255,255,0.6), transparent 60%),
+      radial-gradient(1.4px 1.4px at 38% 30%, rgba(216,180,254,0.75), transparent 60%),
+      radial-gradient(1px 1px at 52% 80%, rgba(255,255,255,0.5), transparent 60%),
+      radial-gradient(1.2px 1.2px at 68% 20%, rgba(255,255,255,0.65), transparent 60%),
+      radial-gradient(1px 1px at 80% 55%, rgba(216,180,254,0.6), transparent 60%),
+      radial-gradient(1.3px 1.3px at 92% 75%, rgba(255,255,255,0.55), transparent 60%),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent 60%),
+      radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.4), transparent 60%),
+      radial-gradient(1.2px 1.2px at 85% 5%, rgba(216,180,254,0.5), transparent 60%);
   }
 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
-    background:var(--black);
+    background-color:var(--black);
+    background-image:var(--stars);
+    background-repeat:repeat;
+    background-size:340px 340px;
+    background-attachment:fixed;
     color:var(--white);
     font-family:'Archivo', 'Segoe UI', sans-serif;
     font-weight:500;
@@ -112,8 +127,8 @@
   .hero{
     position:relative;
     background:
-      radial-gradient(ellipse at 50% 0%, rgba(75,44,107,0.35) 0%, transparent 60%),
-      var(--black);
+      radial-gradient(ellipse at 50% 0%, rgba(169,111,232,0.4) 0%, transparent 60%),
+      rgba(11,9,8,0.82);
     color:var(--nude-soft);
     padding:130px 28px 100px;
     overflow:hidden;
@@ -178,7 +193,7 @@
   }
 
   /* Product grid (placeholders, no photos yet) */
-  .products-band{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .products-band{background:rgba(20,17,15,0.88); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;}
   .pcard{
     background:var(--black); border:1px solid var(--line); border-radius:4px;
@@ -224,7 +239,7 @@
   .order-step p{font-size:0.88rem; color:rgba(245,241,236,0.6); margin-top:10px; font-weight:500;}
 
   /* About / coven */
-  .about{background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .about{background:rgba(20,17,15,0.88); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
   .about h2{font-size:2.1rem; color:var(--nude);}
   .about p{color:rgba(245,241,236,0.65); margin-top:18px; font-size:1rem; font-weight:500;}
@@ -235,7 +250,7 @@
   .about-mark svg{width:60%;}
 
   /* Footer */
-  footer{background:var(--black); color:rgba(245,241,236,0.6); padding:36px 0 20px; border-top:1px solid var(--line);}
+  footer{background:rgba(11,9,8,0.85); color:rgba(245,241,236,0.6); padding:36px 0 20px; border-top:1px solid var(--line);}
   .foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px;}
   footer h4{
     font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.12em;
@@ -298,8 +313,8 @@
 <section class="hero">
   <div class="mist-layer">
     <svg viewBox="0 0 1200 500" preserveAspectRatio="none">
-      <path fill="#4B2C6B" opacity="0.3" d="M0,320 C150,280 300,360 450,320 C600,280 750,350 900,310 C1050,280 1150,330 1200,300 L1200,500 L0,500 Z"/>
-      <path fill="#170C22" opacity="0.5" d="M0,380 C180,350 320,410 500,380 C680,350 820,400 1000,370 C1100,355 1150,375 1200,365 L1200,500 L0,500 Z"/>
+      <path fill="#A96FE8" opacity="0.28" d="M0,320 C150,280 300,360 450,320 C600,280 750,350 900,310 C1050,280 1150,330 1200,300 L1200,500 L0,500 Z"/>
+      <path fill="#3B1F5C" opacity="0.55" d="M0,380 C180,350 320,410 500,380 C680,350 820,400 1000,370 C1100,355 1150,375 1200,365 L1200,500 L0,500 Z"/>
     </svg>
   </div>
   <div class="hero-content">
