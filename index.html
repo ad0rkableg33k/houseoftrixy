@@ -97,3 +97,105 @@
   front.addEventListener('load',function(){resize();});
 })();
 </script>
+
+
+
+<!-- 🃏 Card Widget by BY:G33KY Card Photo Studio -->
+<div id="cw-root" style="width:100%;max-width:320px;margin:0 auto;font-family:sans-serif;user-select:none;">
+  <div id="cw-wrap" style="position:relative;width:100%;aspect-ratio:63/88;touch-action:none;cursor:grab;
+    transform:perspective(900px) rotateX(var(--cw-rx,0deg)) rotateY(var(--cw-ry,0deg)) scale(var(--cw-sc,1));
+    transition:transform 300ms cubic-bezier(.2,.8,.2,1);">
+    <div id="cw-card" style="position:relative;width:100%;height:100%;border-radius:12px;overflow:hidden;
+      border:2px solid rgba(255,255,255,0.5);background:#1a0a14;
+      box-shadow:0 25px 60px -10px rgba(0,0,0,0.85),0 0 40px -5px rgba(255,47,176,0.3);">
+      <img id="cw-front" src="https://imglink.cc/cdn/MUTk9D9N8o.png" crossorigin="anonymous" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;">
+      <img id="cw-back" src="https://imglink.cc/cdn/8XCW6JEEIi.png" crossorigin="anonymous" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;-webkit-user-drag:none;">
+      <canvas id="cw-foil" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:color-dodge;border-radius:12px;"></canvas>
+      <div id="cw-glare" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;border-radius:12px;
+        background:radial-gradient(circle at var(--cw-gx,50%) var(--cw-gy,50%),rgba(255,255,255,0.88) 0%,rgba(255,255,255,0.2) 18%,transparent 45%);
+        opacity:0.45;"></div>
+      <div style="position:absolute;inset:0;border-radius:12px;pointer-events:none;
+        box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35),inset 0 0 28px rgba(0,0,0,0.5);"></div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#888;margin-top:6px;letter-spacing:0.05em;">✦ tilt to see the shine</p>
+</div>
+<script>
+(function(){
+  var wrap=document.getElementById('cw-wrap');
+  var card=document.getElementById('cw-card');
+  var front=document.getElementById('cw-front');
+  var back=document.getElementById('cw-back')||null;
+  var foilCanvas=document.getElementById('cw-foil');
+  var glare=document.getElementById('cw-glare');
+  var fCtx=foilCanvas.getContext('2d');
+  var foilStops=null;
+  var region={x:0.2,y:0.2,w:0.3,h:0.3};
+  var foilStrength=0;
+  var tiltRange=22;
+  var autoSpin=true;
+  var spinAngle=0,spinRAF=null,flipState='front';
+  var relX=0.5,relY=0.5;
+
+  function sv(n,v){wrap.style.setProperty(n,v);}
+
+  function resize(){
+    var r=card.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    foilCanvas.width=r.width*dpr;foilCanvas.height=r.height*dpr;
+    foilCanvas.style.width=r.width+'px';foilCanvas.style.height=r.height+'px';
+    fCtx.scale(dpr,dpr);drawFoil();
+  }
+
+  function drawFoil(){
+    var W=foilCanvas.width/(window.devicePixelRatio||1),H=foilCanvas.height/(window.devicePixelRatio||1);
+    fCtx.clearRect(0,0,W,H);
+    if(!foilStops||foilStrength<=0)return;
+    fCtx.save();
+    fCtx.beginPath();fCtx.rect(region.x*W,region.y*H,region.w*W,region.h*H);fCtx.clip();
+    var angle=115*Math.PI/180,shiftX=(relX-0.5)*W*2.2,shiftY=(relY-0.5)*H*2.2,sw=W*1.1;
+    for(var t=-1;t<4;t++){
+      var ox=Math.cos(angle)*sw*t+shiftX,oy=Math.sin(angle)*sw*t+shiftY;
+      var gx0=W/2+ox,gy0=H/2+oy,gx1=gx0+Math.cos(angle)*sw,gy1=gy0+Math.sin(angle)*sw;
+      var g=fCtx.createLinearGradient(gx0,gy0,gx1,gy1);
+      foilStops.forEach(function(s){g.addColorStop(s[0],s[1]);});
+      fCtx.fillStyle=g;fCtx.globalAlpha=foilStrength;fCtx.fillRect(0,0,W,H);
+    }
+    fCtx.restore();
+  }
+
+  function updateFromPointer(cx,cy){
+    var r=card.getBoundingClientRect();
+    relX=Math.max(0,Math.min(1,(cx-r.left)/r.width));
+    relY=Math.max(0,Math.min(1,(cy-r.top)/r.height));
+    sv('--cw-rx',((0.5-relY)*tiltRange).toFixed(2)+'deg');
+    sv('--cw-ry',((relX-0.5)*tiltRange*1.2).toFixed(2)+'deg');
+    sv('--cw-gx',(relX*100).toFixed(1)+'%');
+    sv('--cw-gy',(relY*100).toFixed(1)+'%');
+    drawFoil();
+  }
+
+  function resetPos(){sv('--cw-rx','0deg');sv('--cw-ry','0deg');sv('--cw-gx','50%');sv('--cw-gy','50%');sv('--cw-sc','1');relX=0.5;relY=0.5;drawFoil();}
+
+  wrap.addEventListener('pointermove',function(e){if(!autoSpin){wrap.style.transition='none';updateFromPointer(e.clientX,e.clientY);}});
+  wrap.addEventListener('pointerenter',function(){if(!autoSpin)sv('--cw-sc','1.04');});
+  wrap.addEventListener('pointerleave',function(){if(!autoSpin){wrap.style.transition='transform 500ms cubic-bezier(.2,.9,.25,1.2)';resetPos();}});
+
+  function doSpin(){
+    spinAngle+=0.6;var rad=spinAngle*Math.PI/180;
+    sv('--cw-ry',((spinAngle%360-180)).toFixed(2)+'deg');
+    sv('--cw-rx',(Math.sin(rad*0.4)*tiltRange*0.35).toFixed(2)+'deg');
+    var norm=((spinAngle%360)+360)%360;
+    if(back){
+      if(norm>90&&norm<270){if(flipState!=='back'){flipState='back';front.style.display='none';back.style.display='block';foilCanvas.style.display='none';}}
+      else{if(flipState!=='front'){flipState='front';front.style.display='block';back.style.display='none';foilCanvas.style.display='block';}}
+    }
+    relX=(Math.sin(rad)+1)/2;relY=(Math.cos(rad*0.6)+1)/2;
+    sv('--cw-gx',(relX*100).toFixed(1)+'%');sv('--cw-gy',(relY*100).toFixed(1)+'%');
+    drawFoil();spinRAF=requestAnimationFrame(doSpin);
+  }
+
+  window.addEventListener('load',function(){resize();if(autoSpin)doSpin();});
+  window.addEventListener('resize',resize);
+  front.addEventListener('load',function(){resize();});
+})();
+</script>
